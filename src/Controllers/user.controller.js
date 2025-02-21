@@ -25,7 +25,17 @@ const getAllUsers = (req, res) => {
 const AddNewUser = async (req, res) => {
   const { userName, userEmail, userAge, userPassword } = req.body;
 
-  // Validate input
+  if (!req.file) {
+    return res.status(400).json({
+      success: false,
+      message: "Image is required!",
+    });
+  }
+  
+  const image = req.file.filename;
+
+  console.log(image);
+
   if (!userName || !userEmail || !userAge || !userPassword) {
     return res.status(400).json({
       success: false,
@@ -34,16 +44,15 @@ const AddNewUser = async (req, res) => {
   }
 
   try {
-    // Hash password correctly
     const hashedPassword = await bcryptjs.hash(userPassword, 10);
 
     const sql =
-      "INSERT INTO users (userName, userEmail, userAge, userPassword) VALUES (?,?,?,?)";
-    const values = [userName, userEmail, userAge, hashedPassword];
+      "INSERT INTO users (userName, userEmail, userAge, userPassword, image) VALUES (?,?,?,?,?)";
+    const values = [userName, userEmail, userAge, hashedPassword, image];
 
     db.query(sql, values, (err, result) => {
       if (err) {
-        console.error("Database Error:", err);
+        //console.error("Database Error:", err);
         return res.status(500).json({
           success: false,
           message: "Error in adding user!",
