@@ -2,7 +2,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-const destinationDir = path.join(process.cwd(), "public/images");
+const destinationDir = path.join(process.cwd(), "public");
 
 if (!fs.existsSync(destinationDir)) {
   fs.mkdirSync(destinationDir, { recursive: true });
@@ -14,7 +14,6 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const filename = file.fieldname + "_" + Date.now() + path.extname(file.originalname);
-    //console.log("Saving file as:", filename); 
     cb(null, filename);
   }
 });

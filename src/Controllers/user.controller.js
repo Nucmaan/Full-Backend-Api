@@ -52,7 +52,6 @@ const AddNewUser = async (req, res) => {
 
     db.query(sql, values, (err, result) => {
       if (err) {
-        //console.error("Database Error:", err);
         return res.status(500).json({
           success: false,
           message: "Error in adding user!",
